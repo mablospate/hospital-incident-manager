@@ -5,3 +5,5 @@ As I have no GUI development experience at the start of this project, I plan to 
 However, I intend to create a graphical user interface for this project in future, so I will implement a modular architecture to allow for this and other potential changes.
 
 The rest of this document will serve as a record of my work, complete with diagrams and information.
+
+---
