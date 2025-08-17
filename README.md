@@ -51,3 +51,9 @@ In this phase, I used ChatGPT to create an interview from which I could extract 
 | FR9 | As a member of staff, I want to receive an internal notification when someone comments on my reported incident so that I can respond if needed. | Low | When someone comments on an incident, the author will be notified internally. |
 | FR10 | As a manager, maintenance worker, biomedical engineer or IT worker, I want to be notified internally when an urgent incident comes up so that it can be solved swiftly. | Low | When an urgent incident is issued, all the managers will get an internal notification, and when this incident is categorized, the members of the target department will be notified as well. |
 ### Non-Functional Requirements
+| ID | Category | Description | Priority |
+|---|---|---|---|
+| NFR1 | Mantainability | The application must be developed in a modular fashion, mantaining the business domain independent from persistence and view so that they can be changed in the future. | MUST |
+| NFR2 | Extensibility | The application must be designed in a way that allows for future functionality. | SHOULD |
+| NFR3 | Security | All users on the program shall be identified and have roles allowing them to access just the information pertaining to their work. | MUST |
+| NFR4 | Reliability | The system must log correctly all incidents and carry out every command it is ordered to without fail. | SHOULD |
