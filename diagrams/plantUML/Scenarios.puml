@@ -1,0 +1,38 @@
+@startuml
+skinparam actorStyle Hollow
+left to right direction
+
+user <|-- staff
+user <|-- manager
+user <|-- technician
+
+rectangle "Hospital Incident Manager"{
+(login).down.>(authenticate):include
+(create ticket)
+(visualize global tickets)
+(visualize department tickets)
+(filter tickets).up.>(visualize global tickets):extends
+(filter tickets).up.>(visualize department tickets):extends
+(download ticket list).up.>(visualize global tickets):extends
+(download ticket list).up.>(visualize department tickets):extends
+(visualize my incidents)
+(assign department to ticket).up.>(visualize global tickets):extends
+(mark notification as read).up.>(open notification tray):extends
+(receive notification) .up.> (open notification tray) : include
+(view audit log)
+}
+
+user --> (login)
+user --> (open notification tray)
+
+staff --> (create ticket)
+staff --> (visualize my incidents)
+
+manager --> (visualize global tickets)
+manager --> (view audit log)
+
+technician --> (visualize department tickets)
+
+(authenticate) --> "authentication authority"
+
+@enduml
