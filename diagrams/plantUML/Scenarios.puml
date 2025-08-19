@@ -20,6 +20,9 @@ rectangle "Hospital Incident Manager"{
 (mark notification as read).up.>(open notification tray):extends
 (receive notification) .up.> (open notification tray) : include
 (view audit log)
+(update ticket notes).up.>(visualize department tickets):extends
+(update ticket status).up.>(visualize department tickets):extends
+(assign technician to ticket).up.>(visualize department tickets):extends
 }
 
 user --> (login)
