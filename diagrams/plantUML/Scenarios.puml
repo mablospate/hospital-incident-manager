@@ -7,35 +7,37 @@ user <|-- manager
 user <|-- technician
 
 rectangle "Hospital Incident Manager"{
-(login).down.>(authenticate):include
-(create ticket)
-(visualize global tickets)
-(visualize department tickets)
-(filter tickets).up.>(visualize global tickets):extends
-(filter tickets).up.>(visualize department tickets):extends
-(download ticket list).up.>(visualize global tickets):extends
-(download ticket list).up.>(visualize department tickets):extends
-(visualize my incidents)
-(assign department to ticket).up.>(visualize global tickets):extends
-(mark notification as read).up.>(open notification tray):extends
-(receive notification) .up.> (open notification tray) : include
-(view audit log)
-(update ticket notes).up.>(visualize department tickets):extends
-(update ticket status).up.>(visualize department tickets):extends
-(assign technician to ticket).up.>(visualize department tickets):extends
+(UC1 - login).down.>(UC2 - authenticate):include
+(UC6 - create ticket)
+(UC8 - visualize global tickets)
+(UC14 - visualize department tickets)
+(UC11 - filter tickets).up.>(UC8 - visualize global tickets):extends
+(UC11 - filter tickets).up.>(UC14 - visualize department tickets):extends
+(UC10 - download ticket list).up.>(UC8 - visualize global tickets):extends
+(UC10 - download ticket list).up.>(UC14 - visualize department tickets):extends
+(UC12 - comment on ticket).up.>(UC8 - visualize global tickets):extends
+(UC12 - comment on ticket).up.>(UC14 - visualize department tickets):extends
+(UC7 - visualize my incidents)
+(UC9 - assign department to ticket).up.>(UC8 - visualize global tickets):extends
+(UC5 - mark notification as read).up.>(UC4 - open notification tray):extends
+(UC3 - receive notification) .up.> (UC4 - open notification tray) : include
+(UC13 - view audit log)
+(UC16 - update ticket notes).up.>(UC14 - visualize department tickets):extends
+(UC15 - update ticket status).up.>(UC14 - visualize department tickets):extends
+(UC17 - assign technician to ticket).up.>(UC14 - visualize department tickets):extends
 }
 
-user --> (login)
-user --> (open notification tray)
+user --> (UC1 - login)
+user --> (UC4 - open notification tray)
 
-staff --> (create ticket)
-staff --> (visualize my incidents)
+staff --> (UC6 - create ticket)
+staff --> (UC7 - visualize my incidents)
 
-manager --> (visualize global tickets)
-manager --> (view audit log)
+manager --> (UC8 - visualize global tickets)
+manager --> (UC13 - view audit log)
 
-technician --> (visualize department tickets)
+technician --> (UC14 - visualize department tickets)
 
-(authenticate) --> "authentication authority"
+(UC2 - authenticate) --> "authentication authority"
 
 @enduml
