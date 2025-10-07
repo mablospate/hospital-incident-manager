@@ -1,0 +1,43 @@
+@startuml
+skinparam groupinheritance 2
+
+'ENTITIES
+class Ticket{
+- id: int
+- title: String
+- description: String
+- notes: String
+- department: Department
+- status: TicketStatus
+}
+abstract User{
+- id: int
+- name: String
+}
+class Manager extends User{
+
+}
+class Staff extends User{
+
+}
+class Technician extends User{
+- department: Department
+}
+class Department{
+- id: int
+}
+enum TicketStatus{
+    OPEN
+    IN PROGRESS
+    ON HOLD
+    RESOLVED
+    CLOSED
+}
+
+'RELATIONSHIPS
+Staff "0..*"o--"1" Ticket: creates
+Department "0..*"o--"0..1" Ticket: categorized
+Department "0..*"o--"1" Technician: belongs
+Technician "0..*"o--"0..*" Ticket: assigned
+
+@enduml

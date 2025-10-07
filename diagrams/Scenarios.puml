@@ -1,6 +1,7 @@
 @startuml
 skinparam actorStyle Hollow
 left to right direction
+skinparam Linetype polyline
 
 user <|-- staff
 user <|-- manager
@@ -22,9 +23,9 @@ rectangle "Hospital Incident Manager"{
 (UC5 - mark notification as read).up.>(UC4 - open notification tray):extends
 (UC3 - receive notification) .up.> (UC4 - open notification tray) : include
 (UC13 - view audit log)
-(UC16 - update ticket notes).up.>(UC14 - visualize department tickets):extends
 (UC15 - update ticket status).up.>(UC14 - visualize department tickets):extends
-(UC17 - assign technician to ticket).up.>(UC14 - visualize department tickets):extends
+(UC16 - assign technician to ticket).up.>(UC14 - visualize department tickets):extends
+(UC17 - close ticket).up.>(UC8 - visualize global tickets): extends
 }
 
 user --> (UC1 - login)
