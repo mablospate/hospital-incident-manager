@@ -1,43 +1,173 @@
 @startuml
 skinparam groupinheritance 2
+skinparam Linetype curve
 
-'ENTITIES
-class Ticket{
-- id: int
-- title: String
-- description: String
-- notes: String
-- department: Department
-- status: TicketStatus
-}
-abstract User{
-- id: int
-- name: String
-}
-class Manager extends User{
+!include ./themes/dark.puml
 
-}
-class Staff extends User{
 
+'DOMAIN
+together{
+
+    class Ticket{
+        - id: int
+        - title: String
+        - description: String
+        - notes: String
+        - status: TicketStatus
+        - department: Optional<Department>
+    }
+
+    class User{
+        - id: int
+        - name: String
+        - role: Role
+        - department: Optional<Department>
+    }
+
+    class Audit{
+        - id: int
+        - crudType: AuditCRUDType
+        - description: String
+    }
 }
-class Technician extends User{
-- department: Department
+
+'INPUT PORTS
+together{
+    interface TicketUseCases <<input port>>{
+        + createTicket(token: String, name: String, description: String): boolean
+        + getStaffTickets(token: String): List<TicketView>
+        + getManagerTickets(token: String): List<TicketView>
+        + assignDepartmentToTicket(token: String, ticketId: String, department: String): boolean
+        + closeTicket(token: String, ticketId: int, close: boolean): boolean
+        + updateTicketNotes(token: String, ticketId: int, notes: String): boolean
+        + getTechnicianTickets(token: String): List<TicketView>
+        + updateTicketStatus(token: String, status: String): boolean
+    }
+
+    interface UserUseCases <<input port>>{
+        + assignTechnicianToTicket(token: String, userId: String, ticketId: String): boolean
+        + removeTechnicianFromTicket(token: String, userID: String, ticketId: String): boolean
+    }
+
+    interface AuditUseCases <<input port>>{
+        + viewAuditLog(token: String): List<AuditView>
+    }
 }
-class Department{
-- id: int
+
+'OUTPUT PORTS
+together{
+    interface AuditRepository <<output port>>{
+        + saveAudit(audit: Audit): boolean
+        + getAudits30Days(): List<Audit>
+    }
+
+    interface UserRepository <<output port>>{
+        + saveUser(user: User): boolean
+        + getUserById(id: int): Optional<User>
+        + getUsersByDepartment(department: Department): List<User>
+        + getUsersByRole(role: Role): List<User>
+        + getUsersByTicket(ticketId: int): List<User>
+
+    }
+
+    interface TicketRepository <<output port>>{
+        + saveTicket(ticket: Ticket): boolean
+        + getTicketById(id: int): Optional<Ticket>
+        + getTicketsByDepartment(department: Department): List<Ticket>
+        + getTicketsByCreator(creatorId: int): List<Ticket>
+        + updateTicketNotes(notes: String): boolean
+        + updateTicketStatus(status: TicketStatus): boolean
+    }
+
+    interface TokenProcessor <<output port>>{
+        + getUserIdFromToken(token: String): int
+    }
 }
-enum TicketStatus{
-    OPEN
-    IN PROGRESS
-    ON HOLD
-    RESOLVED
-    CLOSED
+
+'SERVICES
+together{
+    abstract Service
+
+    class TicketService extends Service implements TicketUseCases
+
+    class UserService extends Service implements UserUseCases
+
+    class AuditService extends Service implements AuditUseCases
+}
+
+'ENUMS
+together{
+    enum TicketStatus{
+        OPEN
+        IN PROGRESS
+        ON HOLD
+        RESOLVED
+        CLOSED
+    }
+
+    enum Role{
+        STAFF
+        TECHNICIAN
+        MANAGER
+    }
+
+    enum Department{
+        MAINTENANCE
+        BIOMEDICAL ENGINEERING
+        IT
+    }
+
+    enum AuditCRUDType{
+        CREATE
+        READ
+        UPDATE
+        DELETE
+    }
+}
+
+'RECORDS
+together{
+    record TicketView{
+        + id: int
+        + title: String
+        + description: String
+        + notes: String
+        + department: String
+        + status: String
+    }
+
+    record UserView{
+        + id: int
+        + name: String
+        + role: String
+        + department: String
+    }
+
+    record AuditView{
+        + id: int
+        + relatedUserId: int
+        + relatedUserName: String
+        + crudType: String
+        + description: String
+    }
 }
 
 'RELATIONSHIPS
-Staff "0..*"o--"1" Ticket: creates
-Department "0..*"o--"0..1" Ticket: categorized
-Department "0..*"o--"1" Technician: belongs
-Technician "0..*"o--"0..*" Ticket: assigned
+Ticket "0..*"--o"1" User: created by
+Ticket "0..*"-->"0..*" User: managed by
+Audit "0..*"-->"1" User: references
+Service "0..*"-->"1" AuditRepository: records in
+Service "0..*"-->"1" TokenProcessor: uses
+AuditService "1"-->"1" AuditRepository: retrieves from
+TicketService "1"-->"1" TicketRepository: manages
+UserService "1"-->"1" UserRepository: manages
+
+note as N1
+We assume all classes
+have basic CRUD
+operations, in case
+they arent explicitly
+defined
+end note
 
 @enduml

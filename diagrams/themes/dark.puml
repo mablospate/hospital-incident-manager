@@ -1,0 +1,33 @@
+' Minimal theme: white halo around elements only
+
+skinparam backgroundColor transparent
+!define COLOR_BG #eeeeee66
+!define COLOR_NOTE #ffff0066
+
+' Ensure all objects have a non-transparent background
+skinparam default {
+  BackgroundColor COLOR_BG
+}
+
+skinparam class {
+  BackgroundColor COLOR_BG
+}
+skinparam package {
+  BackgroundColor COLOR_BG
+}
+skinparam rectangle {
+  BackgroundColor COLOR_BG
+}
+skinparam component {
+  BackgroundColor COLOR_BG
+}
+skinparam note {
+  BackgroundColor COLOR_NOTE
+}
+skinparam actor {
+  BackgroundColor COLOR_BG
+}
+
+skinparam usecase {
+  BackgroundColor COLOR_BG
+}
