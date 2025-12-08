@@ -202,4 +202,3 @@ I'll start with the scenarios view, since it will act as the foundation for all 
 
 ### Diagram
 
-<img src="diagrams/images/Logical.svg" alt="Logical diagram">
