@@ -1,10 +1,6 @@
 @startuml
 skinparam groupinheritance 2
 skinparam Linetype curve
-
-!include ./themes/dark.puml
-
-
 'DOMAIN
 together{
 

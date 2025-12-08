@@ -116,16 +116,7 @@ I'll start with the scenarios view, since it will act as the foundation for all 
 
 ### Diagram
 
-<div style="
-  display: inline-block;
-  border: 1px solid rgba(0,0,0,0.4);
-  border-radius: 10px;
-  overflow: hidden;
-  background: rgba(255,255,255,0.4);
-">
-  <img src="diagrams/images/Scenarios.svg" alt="Scenarios diagram"
-       style="display: block; border-radius: 9px; width: 100%; height: auto;">
-</div>
+<img src="diagrams/images/Scenarios.svg" alt="Scenarios diagram">
 
 ### Catalogue
 
@@ -211,13 +202,4 @@ I'll start with the scenarios view, since it will act as the foundation for all 
 
 ### Diagram
 
-<div style="
-  display: inline-block;
-  border: 1px solid rgba(0,0,0,0.4);
-  border-radius: 10px;
-  overflow: hidden;
-  background: #ffffff66;
-">
-  <img src="diagrams/images/Logical.svg" alt="Logical diagram"
-       style="display: block; border-radius: 9px; width: 100%; height: auto;">
-</div>
+<img src="diagrams/images/Logical.svg" alt="Logical diagram">

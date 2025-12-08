@@ -1,45 +1,67 @@
 @startuml
 skinparam actorStyle Hollow
-left to right direction
 skinparam Linetype polyline
-!include ./themes/dark.puml
-
+left to right direction
 user <|-- staff
 user <|-- manager
 user <|-- technician
 
 rectangle "Hospital Incident Manager"{
-(UC1 - login).down.>(UC2 - authenticate):include
-(UC6 - create ticket)
-(UC8 - visualize global tickets)
-(UC14 - visualize department tickets)
-(UC11 - filter tickets).up.>(UC8 - visualize global tickets):extends
-(UC11 - filter tickets).up.>(UC14 - visualize department tickets):extends
-(UC10 - download ticket list).up.>(UC8 - visualize global tickets):extends
-(UC10 - download ticket list).up.>(UC14 - visualize department tickets):extends
-(UC12 - comment on ticket).up.>(UC8 - visualize global tickets):extends
-(UC12 - comment on ticket).up.>(UC14 - visualize department tickets):extends
-(UC7 - visualize my incidents)
-(UC9 - assign department to ticket).up.>(UC8 - visualize global tickets):extends
-(UC5 - mark notification as read).up.>(UC4 - open notification tray):extends
-(UC3 - receive notification) .up.> (UC4 - open notification tray) : include
-(UC13 - view audit log)
-(UC15 - update ticket status).up.>(UC14 - visualize department tickets):extends
-(UC16 - assign technician to ticket).up.>(UC14 - visualize department tickets):extends
-(UC17 - close ticket).up.>(UC8 - visualize global tickets): extends
+    frame notifications{
+        (UC4 - open notification tray) as UC4
+        (UC3 - receive notification) as UC3
+        (UC5 - mark notification as read) as UC5
+    }
+    frame login{
+        (UC1 - login) as UC1
+        (UC2 - authenticate) as UC2
+    }
+
+    frame staff_actions{
+        (UC6 - create ticket) as UC6
+        (UC7 - visualize my incidents) as UC7
+    }
+
+    frame manager_actions{
+        (UC8 - visualize global tickets) as UC8
+        (UC9 - assign department to ticket) as UC9
+        (UC17 - close ticket) as UC17
+        (UC13 - view audit log) as UC13
+    }
+
+    frame technician_actions{
+        (UC14 - visualize department tickets) as UC14
+        (UC16 - assign technician to ticket) as UC16
+        (UC15 - set ticket status) as UC15
+    }
+
+    frame manager_and_technician{
+        (UC10 - download ticket list) as UC10
+        (UC11 - filter tickets) as UC11
+        (UC12 - comment on ticket) as UC12
+    }
+UC1 ..> UC2:include
+manager_and_technician .up.> UC8:extends
+manager_and_technician .up.> UC14:extends
+UC9 .up.> UC8:extends
+UC5 .up.> UC4:extends
+UC3 .up.> UC4 : include
+UC15 .up.> UC14:extends
+UC16 .up.> UC14:extends
+UC17 .up.> UC8: extends
 }
 
-user --> (UC1 - login)
-user --> (UC4 - open notification tray)
+user -down-> UC1
+user -down-> UC4
 
-staff --> (UC6 - create ticket)
-staff --> (UC7 - visualize my incidents)
+staff -down-> UC6
+staff -down-> UC7
 
-manager --> (UC8 - visualize global tickets)
-manager --> (UC13 - view audit log)
+manager -down-> UC8
+manager -down-> UC13
 
-technician --> (UC14 - visualize department tickets)
+technician -down-> UC14
 
-(UC2 - authenticate) --> "authentication authority"
+UC2 -down-> "authentication authority"
 
 @enduml
