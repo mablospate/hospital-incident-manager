@@ -1,9 +1,7 @@
 @startuml
 skinparam groupinheritance 2
-skinparam Linetype curve
 'DOMAIN
 together{
-
     class Ticket{
         - id: int
         - title: String
@@ -26,9 +24,7 @@ together{
         - description: String
     }
 }
-
 'INPUT PORTS
-together{
     interface TicketUseCases <<input port>>{
         + createTicket(token: String, name: String, description: String): boolean
         + getStaffTickets(token: String): List<TicketView>
@@ -48,10 +44,8 @@ together{
     interface AuditUseCases <<input port>>{
         + viewAuditLog(token: String): List<AuditView>
     }
-}
 
 'OUTPUT PORTS
-together{
     interface AuditRepository <<output port>>{
         + saveAudit(audit: Audit): boolean
         + getAudits30Days(): List<Audit>
@@ -78,21 +72,20 @@ together{
     interface TokenProcessor <<output port>>{
         + getUserIdFromToken(token: String): int
     }
-}
 
 'SERVICES
-together{
-    abstract Service
+    abstract Service{
+        # processToken(token: String): int
+        # logAudit(crudType: AuditCRUDType, description: String): boolean
+    }
 
     class TicketService extends Service implements TicketUseCases
 
     class UserService extends Service implements UserUseCases
 
     class AuditService extends Service implements AuditUseCases
-}
 
 'ENUMS
-together{
     enum TicketStatus{
         OPEN
         IN PROGRESS
@@ -119,10 +112,8 @@ together{
         UPDATE
         DELETE
     }
-}
 
 'RECORDS
-together{
     record TicketView{
         + id: int
         + title: String
@@ -146,17 +137,19 @@ together{
         + crudType: String
         + description: String
     }
-}
 
 'RELATIONSHIPS
 Ticket "0..*"--o"1" User: created by
 Ticket "0..*"-->"0..*" User: managed by
 Audit "0..*"-->"1" User: references
-Service "0..*"-->"1" AuditRepository: records in
-Service "0..*"-->"1" TokenProcessor: uses
-AuditService "1"-->"1" AuditRepository: retrieves from
-TicketService "1"-->"1" TicketRepository: manages
+Service "0..*"-up->"1" AuditRepository: records in
+Service "0..*"-up->"1" TokenProcessor: uses
+AuditService "1"-up->"1" AuditRepository: retrieves from
+TicketService "1"-up->"1" TicketRepository: manages
 UserService "1"-->"1" UserRepository: manages
+AuditService "1"-->"0..*" Audit
+TicketService "1"-->"0..*" Ticket
+UserService "1"-->"0..*" User
 
 note as N1
 We assume all classes

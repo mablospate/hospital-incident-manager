@@ -1,6 +1,5 @@
 @startuml
 skinparam actorStyle Hollow
-skinparam Linetype polyline
 left to right direction
 user <|-- staff
 user <|-- manager
